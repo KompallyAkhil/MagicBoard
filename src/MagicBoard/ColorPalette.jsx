@@ -1,14 +1,12 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaintbrush, faEraser } from "@fortawesome/free-solid-svg-icons";
-import { cn } from "@/lib/utils";
 
 const ColorPalette = ({
   currentColor,
   isEraser,
   onColorChange,
   onEraserToggle,
-  className,
 }) => {
   const colorOptions = [
     { color: "white", tailwindColor: "bg-magicboard-white", label: "White" },
@@ -24,7 +22,7 @@ const ColorPalette = ({
        <button
        key={color}
        onClick={() => onColorChange(color)}
-       aria-label={`Select ${label} color`}
+    
        className={`magic-color-button group w-12 h-12 rounded-full ${tailwindColor} ${
          currentColor === color && !isEraser ? "ring-2 ring-white" : ""
        } transition-transform duration-300 transform group-hover:scale-110`}
