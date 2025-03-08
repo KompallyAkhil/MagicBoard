@@ -32,7 +32,7 @@ export default function MagicBoard() {
       const image = await canvaImage.exportImage();
       setDrawing(image);
       try {
-        const response = await axios.post("http://localhost:5000/solve", { image });
+        const response = await axios.post("https://magic-board-backend.vercel.app/solve", { image });
         const text = response.data;
         setResponses((prev) => [...prev, text.answer]);
         setIsLoading(false);
