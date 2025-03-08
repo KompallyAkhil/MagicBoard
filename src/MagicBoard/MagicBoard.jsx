@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ReactSketchCanvas } from 'react-sketch-canvas';
 import { useRef, useState } from "react";
 import ResponsePanel from './ResponsePanel';
@@ -15,7 +15,7 @@ export default function MagicBoard() {
   const [isLoading, setIsLoading] = useState(false);
   const [responses, setResponses] = useState([]);
   const [drawing, setDrawing] = useState();
-
+  const [dataToSpeak, setDataToSpeak] = useState();
   const handleColorChange = (color) => {
     setCurrentColor(color);
     setIsEraser(false);
@@ -35,6 +35,7 @@ export default function MagicBoard() {
         const response = await axios.post("https://magic-board-backend.vercel.app/solve", { image });
         const text = response.data;
         setResponses((prev) => [...prev, text.answer]);
+        setDataToSpeak(text.answer);
         setIsLoading(false);
         clearCanvas();
         toast.success("Drawing interpreted!", {
@@ -45,7 +46,28 @@ export default function MagicBoard() {
       }
     }
   }
-
+  useEffect(()=>{
+    if(dataToSpeak){
+      if ('speechSynthesis' in window) {
+        const synth = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(dataToSpeak);
+        
+        const voices = synth.getVoices();
+        const preferredVoice = voices.find(voice => 
+          voice.lang.includes('en') && (voice.name.includes('Google') || voice.name.includes('Natural'))
+        );
+        
+        if (preferredVoice) {
+          utterance.voice = preferredVoice;
+        }
+        
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+        
+        synth.speak(utterance);
+      }
+    }
+  },[dataToSpeak]);
   function clearCanvas() {
     if (canvasRef.current) {
       canvasRef.current.clearCanvas();
