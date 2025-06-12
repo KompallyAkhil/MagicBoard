@@ -34,8 +34,11 @@ export default function MagicBoard() {
       try {
         const response = await axios.post("https://magic-board-backend.vercel.app/solve", { image });
         const text = response.data;
-        setResponses((prev) => [...prev, text.answer]);
-        setDataToSpeak(text.answer);
+
+        const parsedAnswer = JSON.parse(text.answer);
+
+        setResponses((prev) => [...prev, ...parsedAnswer]);
+        setDataToSpeak(parsedAnswer.map(item => item.result).join(", "));
         setIsLoading(false);
         clearCanvas();
         toast.success("Drawing interpreted!", {
