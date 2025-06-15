@@ -1,15 +1,21 @@
-# CodeConnect 💻
+# MagicBoard 🧠✏️
 
-Code Connect is a modern chat application built using GetStream for real-time messaging. It features a sleek UI powered by shadcn/ui components and lucide-react icons. The app also includes authentication to ensure secure communication between users.
+**MagicBoard** is an interactive AI-powered canvas that allows users to draw math problems or equations and receive intelligent answers in real-time. It leverages advanced image processing and Google Generative AI to interpret handwritten math content. Designed with modern UI components and seamless user experience in mind.
 
+---
 
-## Features 🚀
+## 🔥 Features
 
- - **Real-time Messaging**: Powered by GetStream for smooth chat experiences.
- - **Modern UI**: Uses shadcn/ui components for a polished design.
- - **Lucide-react Icons**: Provides clean and stylish icons.
- - **User Authentication**: Secure login and registration system.
- - **Responsive Design**: Works seamlessly across different devices.
+- ✍️ **Interactive Canvas**: Draw equations, symbols, or expressions directly on the board.
+- 🤖 **AI-Powered Responses**: Uses Google Generative AI to interpret and solve mathematical content from drawings.
+- 🌈 **Modern UI**: Built with `shadcn/ui` and `lucide-react` for a clean, modern interface.
+- 💬 **Text-to-Speech**: Converts AI-generated responses into voice using speech synthesis.
+- 🔒 **Authentication**: Secure user login and registration.
+- 🌗 **Dark/Light Mode**: Toggle between dark and light themes.
+- 📱 **Responsive Design**: Fully responsive across all devices.
+
+---
+
 
 ## Live Demo 🌐
 
