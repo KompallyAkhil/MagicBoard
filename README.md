@@ -19,7 +19,7 @@
 
 ## Live Demo 🌐
 
-Check out the live demo of CodeConnect:  [CodeConnect Live](https://code-connect-beta.vercel.app/)  
+Check out the live demo of MagicBoard:  [MagicBoard Live](https://magic-board-chi.vercel.app/)  
 
 
 ## Tech Stack 🛠️
@@ -31,7 +31,7 @@ Check out the live demo of CodeConnect:  [CodeConnect Live](https://code-connect
 - **Framer Motion** - A library for declarative animations in React.
 - **ShadCN/UI** - A set of customizable UI components for building modern web applications.
 - **React Toastify**: Displaying interactive notifications to enhance user experience.
-- **Dark/Light** - Dark and Light mode for user experience.
+
 
 
 ## Installation and Setup 🖥️
