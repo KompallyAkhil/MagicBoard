@@ -16,6 +16,7 @@ export default function MagicBoard() {
   const [responses, setResponses] = useState([]);
   const [drawing, setDrawing] = useState();
   const [dataToSpeak, setDataToSpeak] = useState();
+  const [strokeWidth, setStrokeWidth] = useState(5);
   const handleColorChange = (color) => {
     setCurrentColor(color);
     setIsEraser(false);
@@ -91,6 +92,11 @@ export default function MagicBoard() {
               onColorChange={handleColorChange}
               onEraserToggle={toggleEraser}
             />
+            <div className='flex items-center gap-3'>
+              <label className='text-sm text-gray-300'>Stroke</label>
+              <input type='range' min='1' max='100' value={strokeWidth} onChange={(e) => setStrokeWidth(Number(e.target.value))} className='slider' />
+              <span className='text-sm text-gray-300'>{strokeWidth}px</span>
+            </div>
             <div className='flex gap-4'>
               <button 
                 onClick={interPretDrawing}
@@ -115,7 +121,7 @@ export default function MagicBoard() {
               <div className="w-full bg-black rounded-2xl shadow-2xl border-2 border-gray-800 overflow-hidden h-[70vh] min-h-[500px]">
                 <ReactSketchCanvas
                   ref={canvasRef}
-                  strokeWidth={5}
+                  strokeWidth={strokeWidth}
                   height='100%'
                   width='100%'
                   canvasColor='black'
