@@ -25,7 +25,12 @@ export default function MagicBoard() {
   const toggleEraser = () => {
     setIsEraser(!isEraser);
   };
-
+  const handleUndoClick = () => {
+    canvasRef.current?.undo();
+  };
+  const handleRedoClick = () => {
+    canvasRef.current?.redo();
+  };
   async function interPretDrawing() {
     if (canvasRef.current) {
       setIsLoading(true);
@@ -47,28 +52,28 @@ export default function MagicBoard() {
       }
     }
   }
-  useEffect(()=>{
-    if(dataToSpeak){
+  useEffect(() => {
+    if (dataToSpeak) {
       if ('speechSynthesis' in window) {
         const synth = window.speechSynthesis;
         const utterance = new SpeechSynthesisUtterance(dataToSpeak);
-        
+
         const voices = synth.getVoices();
-        const preferredVoice = voices.find(voice => 
+        const preferredVoice = voices.find(voice =>
           voice.lang.includes('en') && (voice.name.includes('Google') || voice.name.includes('Natural'))
         );
-        
+
         if (preferredVoice) {
           utterance.voice = preferredVoice;
         }
-        
+
         utterance.rate = 1.0;
         utterance.pitch = 1.0;
-        
+
         synth.speak(utterance);
       }
     }
-  },[dataToSpeak]);
+  }, [dataToSpeak]);
   function clearCanvas() {
     if (canvasRef.current) {
       canvasRef.current.clearCanvas();
@@ -80,7 +85,7 @@ export default function MagicBoard() {
       <Toaster richColors />
       <div className="w-full min-h-screen bg-black text-white p-4 md:p-8 flex flex-col items-center">
         <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-10 tracking-tight reveal-animation">
-          Magic Board 
+          Magic Board
           <span className="ml-2 inline-block animate-pulse-light">✨</span>
         </h1>
 
@@ -96,9 +101,15 @@ export default function MagicBoard() {
               <label className='text-sm text-gray-300'>Stroke</label>
               <input type='range' min='1' max='100' value={strokeWidth} onChange={(e) => setStrokeWidth(Number(e.target.value))} className='slider' />
               <span className='text-sm text-gray-300'>{strokeWidth}px</span>
+              <button className='px-3 md:px-6 py-2 md:py-3 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium 
+                         transition-all duration-300 ease-in-out transform hover:scale-105 
+                         hover:shadow-lg hover:shadow-blue-500/20 active:scale-95 focus:outline-none' onClick={handleUndoClick}>Undo</button>
+              <button className='px-3 md:px-6 py-2 md:py-3 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium 
+                         transition-all duration-300 ease-in-out transform hover:scale-105 
+                         hover:shadow-lg hover:shadow-blue-500/20 active:scale-95 focus:outline-none' onClick={handleRedoClick} >Redo</button>
             </div>
             <div className='flex gap-4'>
-              <button 
+              <button
                 onClick={interPretDrawing}
                 className="px-3 md:px-6 py-2 md:py-3 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium 
                          transition-all duration-300 ease-in-out transform hover:scale-105 
@@ -106,7 +117,7 @@ export default function MagicBoard() {
               >
                 Interpret Drawing
               </button>
-              <button 
+              <button
                 onClick={clearCanvas}
                 className="px-3 md:px-6 py-2 md:py-3 rounded-full bg-gray-800 text-white font-medium 
                          transition-all duration-300 ease-in-out transform hover:scale-105 
