@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import axios from 'axios';
 import { toast } from "sonner";
 
-const PromptBar = ({ canvasRef, onImageGenerated, clearCanvas }) => {
+const PromptBar = ({ canvasRef, onImageGenerated, clearCanvas, setIsLoading, setLoadingType }) => {
   const [message, setMessage] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const textareaRef = useRef(null);
@@ -16,6 +16,8 @@ const PromptBar = ({ canvasRef, onImageGenerated, clearCanvas }) => {
     e.preventDefault();
     if (!message.trim()) return;
 
+    setIsLoading(true);
+    setLoadingType('generate');
     try {
       let image = null;
 
@@ -53,6 +55,8 @@ const PromptBar = ({ canvasRef, onImageGenerated, clearCanvas }) => {
     } catch (error) {
       console.error("Error generating image:", error);
       toast.error("Server error, please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 

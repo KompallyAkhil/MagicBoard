@@ -13,6 +13,7 @@ export default function MagicBoard() {
   const [currentColor, setCurrentColor] = useState("white");
   const [isEraser, setIsEraser] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingType, setLoadingType] = useState('interpret'); // 'interpret' or 'generate'
   const [responses, setResponses] = useState([]);
   const [drawing, setDrawing] = useState();
   const [dataToSpeak, setDataToSpeak] = useState();
@@ -38,6 +39,7 @@ export default function MagicBoard() {
   async function interPretDrawing() {
     if (canvasRef.current) {
       setIsLoading(true);
+      setLoadingType('interpret');
       const canvaImage = canvasRef.current;
       const image = await canvaImage.exportImage();
       setDrawing(image);
@@ -149,7 +151,7 @@ export default function MagicBoard() {
             <div className="lg:col-span-3 fade-slide-in h-[70vh] min-h-[300px]" style={{ animationDelay: "0.3s" }}>
               <ResponsePanel responses={responses} />
             </div>
-            <PromptBar canvasRef={canvasRef} onImageGenerated={handleImageGenerated} clearCanvas={clearCanvas} />
+            <PromptBar canvasRef={canvasRef} onImageGenerated={handleImageGenerated} clearCanvas={clearCanvas} setIsLoading={setIsLoading} setLoadingType={setLoadingType} />
 
           </div>
         </div>
@@ -161,7 +163,7 @@ export default function MagicBoard() {
             <div className="animate-pulse-light mb-3">
               <div className="h-8 w-8 border-4 border-magicboard-skyblue border-t-transparent rounded-full animate-spin"></div>
             </div>
-            <p className="text-white">Interpreting your drawing...</p>
+            <p className="text-white">{loadingType === 'generate' ? 'Generating image...' : 'Interpreting your drawing...'}</p>
           </div>
         </div>
       )}
