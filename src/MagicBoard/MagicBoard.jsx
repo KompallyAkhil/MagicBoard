@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { ReactSketchCanvas } from 'react-sketch-canvas';
 import { useRef, useState } from "react";
 import ResponsePanel from './ResponsePanel';
+import PromptBar from './PromptBar';
 import ColorPalette from './ColorPalette';
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import axios from 'axios';
 import "../index.css";
-
 export default function MagicBoard() {
   const canvasRef = useRef(null);
   const [currentColor, setCurrentColor] = useState("white");
@@ -16,6 +16,10 @@ export default function MagicBoard() {
   const [responses, setResponses] = useState([]);
   const [drawing, setDrawing] = useState();
   const [dataToSpeak, setDataToSpeak] = useState();
+
+  const handleImageGenerated = (imageData) => {
+    setResponses((prev) => [...prev, imageData]);
+  };
   const [strokeWidth, setStrokeWidth] = useState(5);
   const handleColorChange = (color) => {
     setCurrentColor(color);
@@ -38,7 +42,7 @@ export default function MagicBoard() {
       const image = await canvaImage.exportImage();
       setDrawing(image);
       try {
-        const response = await axios.post("https://magic-board-backend.vercel.app/solve", { image });
+        const response = await axios.post("http://localhost:5000/solve", { image });
         const text = response.data;
         setResponses((prev) => [...prev, text.answer]);
         setDataToSpeak(text.answer);
@@ -51,7 +55,9 @@ export default function MagicBoard() {
         setIsLoading(false);
       }
     }
+    
   }
+  console.log(drawing);
   useEffect(() => {
     if (dataToSpeak) {
       if ('speechSynthesis' in window) {
@@ -83,12 +89,11 @@ export default function MagicBoard() {
   return (
     <>
       <Toaster richColors />
-      <div className="w-full min-h-screen bg-black text-white p-4 md:p-8 flex flex-col items-center">
+      <div className="w-full min-h-screen bg-black text-white p-4 md:p-8 flex flex-col items-center justify-center">
         <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-10 tracking-tight reveal-animation">
           Magic Board
           <span className="ml-2 inline-block animate-pulse-light">✨</span>
         </h1>
-
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-6 fade-slide-in flex flex-col md:flex-row items-center justify-between gap-4">
             <ColorPalette
@@ -127,9 +132,9 @@ export default function MagicBoard() {
               </button>
             </div>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-            <div className="lg:col-span-2 xl:col-span-3 fade-slide-in" style={{ animationDelay: "0.2s" }}>
-              <div className="w-full bg-black rounded-2xl shadow-2xl border-2 border-gray-800 overflow-hidden h-[70vh] min-h-[500px]">
+          <div className="grid grid-cols-1 lg:grid-cols-10 gap-6 md:gap-8">
+            <div className="lg:col-span-7 fade-slide-in" style={{ animationDelay: "0.2s" }}>
+              <div className="w-full bg-black rounded-3xl shadow-2xl border-2 border-gray-800 overflow-hidden h-[70vh] min-h-[500px]">
                 <ReactSketchCanvas
                   ref={canvasRef}
                   strokeWidth={strokeWidth}
@@ -141,9 +146,11 @@ export default function MagicBoard() {
                 />
               </div>
             </div>
-            <div className="fade-slide-in h-[70vh]  min-h-[300px]" style={{ animationDelay: "0.3s" }}>
+            <div className="lg:col-span-3 fade-slide-in h-[70vh] min-h-[300px]" style={{ animationDelay: "0.3s" }}>
               <ResponsePanel responses={responses} />
             </div>
+            <PromptBar canvasRef={canvasRef} onImageGenerated={handleImageGenerated} clearCanvas={clearCanvas} />
+
           </div>
         </div>
       </div>
