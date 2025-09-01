@@ -5,7 +5,7 @@ import axios from 'axios';
 import { toast } from "sonner";
 
 const PromptBar = ({ canvasRef, onImageGenerated, clearCanvas }) => {
-   const [message, setMessage] = useState('');
+  const [message, setMessage] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const textareaRef = useRef(null);
 
@@ -24,7 +24,7 @@ const PromptBar = ({ canvasRef, onImageGenerated, clearCanvas }) => {
         image = await canvasRef.current.exportImage(); // gives base64
       }
 
-      const response = await axios.post("http://localhost:5000/generate-image-prompt", {
+      const response = await axios.post("https://magic-board-backend.vercel.app/generate-image-prompt", {
         prompt: message.trim(),
         image,
       });
@@ -104,11 +104,10 @@ const PromptBar = ({ canvasRef, onImageGenerated, clearCanvas }) => {
             type="submit"
             size="sm"
             disabled={!canSend}
-            className={`absolute right-3 bottom-3 h-8 w-8 p-0 rounded-lg transition-all duration-200 ${
-              canSend
+            className={`absolute right-3 bottom-3 h-8 w-8 p-0 rounded-lg transition-all duration-200 ${canSend
                 ? 'bg-gradient-to-r from-primary to-primary-glow hover:shadow-lg hover:scale-105'
                 : 'bg-muted text-muted-foreground cursor-not-allowed'
-            }`}
+              }`}
           >
             <Send className="h-4 w-4" />
           </Button>
