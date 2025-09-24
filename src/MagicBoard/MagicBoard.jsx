@@ -59,7 +59,6 @@ export default function MagicBoard() {
     }
 
   }
-  console.log(drawing);
   useEffect(() => {
     if (dataToSpeak) {
       if ('speechSynthesis' in window) {
