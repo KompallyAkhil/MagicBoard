@@ -26,7 +26,7 @@ const PromptBar = ({ canvasRef, onImageGenerated, clearCanvas, setIsLoading, set
         image = await canvasRef.current.exportImage(); // gives base64
       }
 
-      const response = await axios.post("http://localhost:5000/generate-image-prompt", {
+      const response = await axios.post("https://magic-board-backend.vercel.app/generate-image-prompt", {
         prompt: message.trim(),
         image,
       });
